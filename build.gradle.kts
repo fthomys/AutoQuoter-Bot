@@ -1,16 +1,20 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+import groovy.lang.Closure
+import org.gradle.kotlin.dsl.invoke
 
 plugins {
     kotlin("jvm") version "2.0.0"
     java
     kotlin("plugin.serialization") version "1.6.10"
     application
-    id("com.github.johnrengelman.shadow") version "7.1.2"
+    id("com.palantir.git-version") version "4.3.0"
+    id("com.gradleup.shadow") version "9.3.1"
 }
 
 application.mainClass.set("me.fabichan.autoquoter.Main")
 group = "me.fabichan"
-version = "1.0-SNAPSHOT"
+val gitVersion: Closure<String> by extra
+version = gitVersion()
 
 repositories {
     mavenCentral()
