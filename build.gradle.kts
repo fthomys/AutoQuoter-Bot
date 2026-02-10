@@ -43,9 +43,9 @@ tasks.withType<ShadowJar> {
 tasks.withType<JavaCompile> {
     options.encoding = "UTF-8"
     options.isIncremental = true
-    options.release.set(17)
+    options.release.set(21)
 }
 
 kotlin {
-    jvmToolchain(17)
+    jvmToolchain(21)
 }

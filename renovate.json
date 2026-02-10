@@ -1,0 +1,82 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended"
+  ],
+  "baseBranchPatterns": [
+    "main"
+  ],
+  "labels": [
+    "dependencies",
+    "renovate"
+  ],
+  "dependencyDashboard": true,
+  "enabledManagers": [
+    "gradle"
+  ],
+  "rebaseWhen": "conflicted",
+  "prConcurrentLimit": 4,
+  "prHourlyLimit": 2,
+  "gradle": {
+    "enabled": true,
+    "managerFilePatterns": [
+      "(^|/)build\\.gradle\\.kts$"
+    ]
+  },
+  "packageRules": [
+    {
+      "matchManagers": [
+        "gradle"
+      ],
+      "matchUpdateTypes": [
+        "patch"
+      ],
+      "automerge": true,
+      "automergeType": "pr"
+    },
+    {
+      "groupName": "Kotlin (stdlib, reflect, serialization)",
+      "matchPackageNames": [
+        "/^org\\.jetbrains\\.kotlin/"
+      ],
+      "automerge": false
+    },
+    {
+      "groupName": "Exposed ORM",
+      "matchPackageNames": [
+        "/^org\\.jetbrains\\.exposed/"
+      ]
+    },
+    {
+      "groupName": "Flyway DB",
+      "matchPackageNames": [
+        "/^org\\.flywaydb/"
+      ]
+    },
+    {
+      "groupName": "PostgreSQL Driver",
+      "matchPackageNames": [
+        "/^org\\.postgresql/"
+      ]
+    },
+    {
+      "groupName": "JDA (Discord API)",
+      "matchPackageNames": [
+        "/^net\\.dv8tion/"
+      ]
+    },
+    {
+      "groupName": "Gson",
+      "matchPackageNames": [
+        "/^com\\.google\\.code\\.gson/"
+      ]
+    },
+    {
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
+      "groupName": "Minor & patch dependency updates"
+    }
+  ]
+}
