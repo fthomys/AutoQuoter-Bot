@@ -73,12 +73,10 @@ jobs:
       - name: Build and push with Jib
         run: |
           IMAGE_TAGS="${{ steps.meta.outputs.tags }}"
-          FIRST_REF=$(echo "$IMAGE_TAGS" | head -n 1)
-          IMAGE_NAME=$(echo "$FIRST_REF" | sed 's/:[^:]*$//')
-          TAGS_ONLY=$(echo "$IMAGE_TAGS" | awk -F: '{print $NF}' | tr '\n' ',' | sed 's/,$//')
-          LABELS=$(echo "${{ steps.meta.outputs.labels }}" | tr '\n' ',' | sed 's/,$//')
-
+          MAIN_IMAGE=$(echo "$IMAGE_TAGS" | head -n 1)
+          TAGS_ONLY=$(echo "$IMAGE_TAGS" | tail -n +2 | awk -F: '{print $NF}' | tr '\n' ',' | sed 's/,$//')
+          
           ./gradlew --no-configuration-cache jib \
-            -Djib.to.image="$IMAGE_NAME" \
+            -Djib.to.image="$MAIN_IMAGE" \
             -Djib.to.tags="$TAGS_ONLY" \
-            -Djib.container.labels="$LABELS"
+            -Djib.container.labels="$(echo "${{ steps.meta.outputs.labels }}" | tr '\n' ',' | sed 's/,$//')"
