@@ -30,11 +30,11 @@ dependencies {
     implementation("org.postgresql:postgresql:42.7.9")
     implementation("net.dv8tion:JDA:5.6.1")
     implementation("io.github.freya022:BotCommands:3.0.0-beta.8")
-    implementation("org.flywaydb:flyway-core:10.22.0")
+    implementation("org.flywaydb:flyway-core:12.0.0")
     implementation("com.google.code.gson:gson:2.13.2")
     implementation("dev.reformator.stacktracedecoroutinator:stacktrace-decoroutinator-jvm:2.6.1")
     runtimeOnly("org.postgresql:postgresql")
-    runtimeOnly("org.flywaydb:flyway-database-postgresql:10.22.0")
+    runtimeOnly("org.flywaydb:flyway-database-postgresql:12.0.0")
 }
 
 tasks.withType<ShadowJar> {
