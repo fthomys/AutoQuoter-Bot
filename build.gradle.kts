@@ -5,7 +5,7 @@ import org.gradle.kotlin.dsl.invoke
 plugins {
     kotlin("jvm") version "2.3.10"
     java
-    kotlin("plugin.serialization") version "1.9.25"
+    kotlin("plugin.serialization") version "2.3.10"
     application
     id("com.palantir.git-version") version "4.3.0"
     id("com.gradleup.shadow") version "9.3.1"
