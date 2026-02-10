@@ -1,5 +1,6 @@
 package me.fabichan.autoquoter.events
 
+import dev.freya02.botcommands.jda.ktx.requests.awaitOrNullOn
 import dev.minn.jda.ktx.generics.getChannel
 import dev.minn.jda.ktx.messages.EmbedBuilder
 import dev.minn.jda.ktx.messages.MessageCreate
@@ -7,17 +8,17 @@ import io.github.freya022.botcommands.api.core.annotations.BEventListener
 import io.github.freya022.botcommands.api.core.db.Database
 import io.github.freya022.botcommands.api.core.db.preparedStatement
 import io.github.freya022.botcommands.api.core.service.annotations.BService
-import io.github.freya022.botcommands.api.core.utils.awaitOrNullOn
 import io.github.oshai.kotlinlogging.KotlinLogging
 import me.fabichan.autoquoter.config.Config
 import net.dv8tion.jda.api.JDA
+import net.dv8tion.jda.api.components.actionrow.ActionRow
 import net.dv8tion.jda.api.entities.Guild
 import net.dv8tion.jda.api.entities.Message
 import net.dv8tion.jda.api.entities.SelfUser
 import net.dv8tion.jda.api.entities.User
 import net.dv8tion.jda.api.entities.channel.middleman.GuildMessageChannel
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
-import net.dv8tion.jda.api.interactions.components.buttons.Button
+import net.dv8tion.jda.api.components.buttons.Button
 import net.dv8tion.jda.api.requests.ErrorResponse
 import net.dv8tion.jda.api.utils.messages.MessageCreateData
 
@@ -88,7 +89,8 @@ class QuoteEvent(private val database: Database) {
                         "Jump to message"
                     )
                     val m = BuildQuoteEmbed(message, event.guild, event.jda.selfUser)
-                    event.message.reply(m).setActionRow(button).mentionRepliedUser(false).queue()
+                    val actionRow: ActionRow = ActionRow.of(button)
+                    event.message.reply(m).addComponents(actionRow).mentionRepliedUser(false).queue()
                     recordQuoteStats(message, event)
                     continue
                 }
@@ -108,7 +110,7 @@ class QuoteEvent(private val database: Database) {
     ): MessageCreateData {
         var ftitle = "AutoQuoter"
 
-        val botmember = eventGuild.retrieveMemberById(selfUser?.idLong ?: 0).awaitOrNullOn(ErrorResponse.UNKNOWN_MEMBER)
+        val botmember = eventGuild.retrieveMemberById(selfUser?.idLong!!).awaitOrNullOn(ErrorResponse.UNKNOWN_MEMBER)
 
         if (quotedMessage.guild.id != eventGuild.id) {
             ftitle += " - External Message from ${quotedMessage.guild.name}"

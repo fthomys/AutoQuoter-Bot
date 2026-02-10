@@ -34,6 +34,11 @@ dependencies {
     implementation("org.flywaydb:flyway-core:12.0.0")
     implementation("com.google.code.gson:gson:2.13.2")
     implementation("dev.reformator.stacktracedecoroutinator:stacktrace-decoroutinator-jvm:2.6.1")
+    implementation("club.minnced:jda-ktx:0.14.1")
+    implementation("io.github.freya022:BotCommands-jda-ktx:3.0.0-beta.8")
+    implementation("dev.reformator.stacktracedecoroutinator:stacktrace-decoroutinator-common:2.6.1")
+    implementation("dev.reformator.stacktracedecoroutinator:stacktrace-decoroutinator-jvm:2.6.1")
+    implementation("dev.reformator.stacktracedecoroutinator:stacktrace-decoroutinator-runtime:2.4.1")
     runtimeOnly("org.postgresql:postgresql")
     runtimeOnly("org.flywaydb:flyway-database-postgresql:12.0.0")
 }

@@ -1,13 +1,15 @@
 package me.fabichan.autoquoter.commands
 
 import dev.minn.jda.ktx.coroutines.await
+import dev.minn.jda.ktx.interactions.components.ActionRow
 import dev.minn.jda.ktx.messages.Embed
 import io.github.freya022.botcommands.api.commands.annotations.Command
 import io.github.freya022.botcommands.api.commands.application.provider.GlobalApplicationCommandManager
 import io.github.freya022.botcommands.api.commands.application.provider.GlobalApplicationCommandProvider
 import io.github.freya022.botcommands.api.commands.application.slash.GuildSlashEvent
 import net.dv8tion.jda.api.Permission
-import net.dv8tion.jda.api.interactions.components.buttons.Button
+import net.dv8tion.jda.api.components.actionrow.ActionRow
+import net.dv8tion.jda.api.components.buttons.Button
 
 @Command
 class Vote : GlobalApplicationCommandProvider {
@@ -32,9 +34,10 @@ class Vote : GlobalApplicationCommandProvider {
             title = "Vote for me!"
             description = "Vote for me on the following platforms:"
         }
-        
+        val actionRow: ActionRow = ActionRow.of(topggbutton, wumpusstorebutton)
+
         event.reply("Vote for me on the following platforms:")
-            .addActionRow(topggbutton, wumpusstorebutton).addEmbeds(embed)
+            .addComponents(actionRow).addEmbeds(embed)
             .await()
     }
 

@@ -1,7 +1,5 @@
 package me.fabichan.autoquoter
 
-
-import dev.reformator.stacktracedecoroutinator.runtime.DecoroutinatorRuntime
 import io.github.freya022.botcommands.api.core.BotCommands
 import io.github.freya022.botcommands.api.core.config.DevConfig
 import io.github.oshai.kotlinlogging.KotlinLogging
@@ -25,13 +23,6 @@ object Main {
                 Environment.logbackConfigPath.absolutePathString()
             )
             logger.info { "Loading logback configuration at ${Environment.logbackConfigPath.absolutePathString()}" }
-            if ("-XX:+AllowEnhancedClassRedefinition" in ManagementFactory.getRuntimeMXBean().inputArguments) {
-                logger.info { "Skipping stacktrace-decoroutinator as enhanced hotswap is active" }
-            } else if ("--no-decoroutinator" in args) {
-                logger.info { "Skipping stacktrace-decoroutinator as --no-decoroutinator is specified" }
-            } else {
-                DecoroutinatorRuntime.load()
-            }
             logger.info { "Running on Java ${System.getProperty("java.version")}" }
 
             val config = Config.instance
@@ -42,22 +33,27 @@ object Main {
             BotCommands.create {
                 if (Environment.isDev) {
                     disableExceptionsInDMs = true
-                    @OptIn(DevConfig::class)
-                    disableAutocompleteCache = true
+                    disableExceptionsInDMs = true
                 }
 
-                addOwners(config.ownerIds)
+                addPredefinedOwners(*config.ownerIds.toLongArray())
 
                 addSearchPath(mainPackageName)
 
                 applicationCommands {
                     @OptIn(DevConfig::class)
-                    onlineAppCommandCheckEnabled = Environment.isDev
+                    disableAutocompleteCache = Environment.isDev
+
+                    fileCache {
+                        @OptIn(DevConfig::class)
+                        checkOnline = !Environment.isDev
+                    }
+
                     testGuildIds += config.testGuildIds
                 }
 
                 components {
-                    useComponents = true
+                    enable = true
                 }
             }
 

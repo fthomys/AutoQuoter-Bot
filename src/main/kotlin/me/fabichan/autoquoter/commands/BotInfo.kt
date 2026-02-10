@@ -12,7 +12,8 @@ import io.github.oshai.kotlinlogging.KotlinLogging
 import me.fabichan.autoquoter.config.Config
 import net.dv8tion.jda.api.JDAInfo
 import net.dv8tion.jda.api.Permission
-import net.dv8tion.jda.api.interactions.components.buttons.Button
+import net.dv8tion.jda.api.components.actionrow.ActionRow
+import net.dv8tion.jda.api.components.buttons.Button
 import net.dv8tion.jda.api.utils.TimeFormat
 import java.lang.management.ManagementFactory
 
@@ -112,7 +113,8 @@ class BotInfo(
         )
         val supportButton = Button.link(Config.instance.supportGuildInvite, "Support Server")
 
-        event.hook.sendMessageEmbeds(embed).setActionRow(inviteButton, supportButton).queue()
+        val rowComponent: ActionRow = ActionRow.of(inviteButton, supportButton)
+        event.hook.sendMessageEmbeds(embed).addComponents(rowComponent)
     }
 
     override fun declareGlobalApplicationCommands(manager: GlobalApplicationCommandManager) {
