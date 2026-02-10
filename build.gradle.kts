@@ -22,6 +22,7 @@ repositories {
 
 dependencies {
     implementation(kotlin("stdlib"))
+    implementation("io.github.oshai:kotlin-logging-jvm:7.0.14")
     implementation("com.zaxxer:HikariCP:7.0.2")
     implementation("org.slf4j:slf4j-api:2.1.0-alpha1")
     implementation("ch.qos.logback:logback-classic:1.5.29")
