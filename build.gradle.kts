@@ -3,7 +3,7 @@ import groovy.lang.Closure
 import org.gradle.kotlin.dsl.invoke
 
 plugins {
-    kotlin("jvm") version "2.0.0"
+    kotlin("jvm") version "2.3.10"
     java
     kotlin("plugin.serialization") version "1.6.10"
     application
