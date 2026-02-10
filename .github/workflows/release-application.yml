@@ -45,20 +45,26 @@ jobs:
         with:
           images: |
             ghcr.io/${{ github.repository }}
+          flavor: |
+            latest=false
           tags: |
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
-            type=sha,format=long
-            type=ref,event=branch
+            type=semver,pattern={{major}}
+            
             type=raw,value=latest,enable=${{ github.event_name == 'release' && github.event.release.prerelease == false }}
             type=raw,value=release,enable=${{ github.event_name == 'release' && github.event.release.prerelease == false }}
+            
             type=raw,value=pre-release,enable=${{ github.event_name == 'release' && github.event.release.prerelease == true }}
-            type=raw,value=nightly,enable=${{ github.event_name != 'release' }}
-            type=raw,value=nightly-${{ github.sha }},enable=${{ github.event_name != 'release' }}
-            type=raw,value=edge,enable=${{ github.event_name == 'workflow_dispatch' }}
+            
+            type=raw,value=nightly,enable=${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
+            type=raw,value=nightly-${{ github.sha }},enable=${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
             type=raw,value=dev-${{ github.sha }},enable=${{ github.event_name == 'push' }}
+            
+            type=raw,value=edge,enable=${{ github.event_name == 'workflow_dispatch' }}
             type=raw,value=edge-${{ github.sha }},enable=${{ github.event_name == 'workflow_dispatch' }}
-            type=raw,value=dev-${{ github.sha }},enable=${{ github.event_name == 'workflow_dispatch' }}
+            
+            type=sha,format=long
           labels: |
             org.opencontainers.image.title=${{ github.event.repository.name }}
             org.opencontainers.image.revision=${{ github.sha }}
