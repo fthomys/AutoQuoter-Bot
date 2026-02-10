@@ -9,6 +9,7 @@ plugins {
     application
     id("com.palantir.git-version") version "4.3.0"
     id("com.gradleup.shadow") version "9.3.1"
+    id("com.google.cloud.tools.jib") version "3.5.3"
 }
 
 application.mainClass.set("me.fabichan.autoquoter.Main")
@@ -58,4 +59,14 @@ tasks.withType<JavaCompile> {
 
 kotlin {
     jvmToolchain(21)
+}
+
+jib {
+    from {
+        image = "eclipse-temurin:21-jre-alpine"
+    }
+    container {
+        mainClass = "me.fabichan.autoquoter.Main"
+        jvmFlags = listOf("-XX:+UseContainerSupport")
+    }
 }
