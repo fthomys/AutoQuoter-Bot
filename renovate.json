@@ -37,7 +37,8 @@
     {
       "groupName": "Kotlin (stdlib, reflect, serialization)",
       "matchPackageNames": [
-        "/^org\\.jetbrains\\.kotlin/"
+        "/^org\\.jetbrains\\.kotlin/",
+        "/^org\\.jetbrains\\.kotlinx\\.serialization/"
       ],
       "automerge": false
     },
@@ -62,7 +63,8 @@
     {
       "groupName": "JDA (Discord API)",
       "matchPackageNames": [
-        "/^net\\.dv8tion/"
+        "/^net\\.dv8tion/",
+        "/^io\\.github\\.freya022/"
       ]
     },
     {
