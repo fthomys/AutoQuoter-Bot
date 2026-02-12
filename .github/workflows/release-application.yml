@@ -39,12 +39,17 @@ jobs:
           java-version: '21'
           cache: gradle
 
+      - name: Prepare image names
+        run: |
+          echo "REPO_LOWER=$(echo \"${{ github.event.repository.name }}\" | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
+          echo "OWNER_LOWER=$(echo \"${{ github.repository_owner }}\" | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
+
       - name: Extract metadata (tags, labels) for Docker
         id: meta
         uses: docker/metadata-action@v5
         with:
           images: |
-            ghcr.io/${{ github.repository }}
+            ghcr.io/${{ env.OWNER_LOWER }}/${{ env.REPO_LOWER }}
           flavor: |
             latest=false
           tags: |

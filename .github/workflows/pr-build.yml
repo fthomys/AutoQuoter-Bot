@@ -27,7 +27,8 @@ jobs:
 
       - name: Build and Push Docker Image
         run: |
+          REPO_LOWER=$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')
           ./gradlew jib \
-            -Djib.to.image=ghcr.io/${{ github.repository }}:pr-${{ github.event.number }} \
+            -Djib.to.image=ghcr.io/${REPO_LOWER}:pr-${{ github.event.number }} \
             -Djib.to.auth.username=${{ github.actor }} \
             -Djib.to.auth.password=${{ secrets.GITHUB_TOKEN }}
