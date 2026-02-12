@@ -32,7 +32,7 @@ dependencies {
     implementation("org.postgresql:postgresql:42.7.10")
     implementation("net.dv8tion:JDA:6.3.0")
     implementation("io.github.freya022:BotCommands:3.0.0-beta.8")
-    implementation("org.flywaydb:flyway-core:12.0.0")
+    implementation("org.flywaydb:flyway-core:12.0.1")
     implementation("com.google.code.gson:gson:2.13.2")
     implementation("dev.reformator.stacktracedecoroutinator:stacktrace-decoroutinator-jvm:2.6.1")
     implementation("club.minnced:jda-ktx:0.14.1")
@@ -42,7 +42,7 @@ dependencies {
     implementation("dev.reformator.stacktracedecoroutinator:stacktrace-decoroutinator-runtime:2.4.1")
     implementation("io.micrometer:micrometer-registry-prometheus:1.16.3")
     runtimeOnly("org.postgresql:postgresql")
-    runtimeOnly("org.flywaydb:flyway-database-postgresql:12.0.0")
+    runtimeOnly("org.flywaydb:flyway-database-postgresql:12.0.1")
 }
 
 tasks.withType<ShadowJar> {
