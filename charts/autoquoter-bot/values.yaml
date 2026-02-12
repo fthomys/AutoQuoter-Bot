@@ -45,8 +45,8 @@ securityContext:
 # The bot configuration that will be used to generate config.json
 config:
   token: ""
-  ownerIds: [] # List of Long (e.g. [123456789])
-  testGuildIds: [] # List of Long
+  ownerIds: [591226486657253377] # List of Long (e.g. [123456789])
+  testGuildIds: [1213160657512308777]
   databaseConfig:
     serverName: ""
     port: 5432
