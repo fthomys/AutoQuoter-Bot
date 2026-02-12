@@ -16,6 +16,6 @@ jobs:
           gh api \
             --method DELETE \
             -H "Accept: application/vnd.github+json" \
-            /orgs/${{ github.repository_owner }}/packages/container/${{ github.event.repository.name }}/versions/$(gh api /orgs/${{ github.repository_owner }}/packages/container/${{ github.event.repository.name }}/versions --jq '.[] | select(.metadata.container.tags[] == "pr-${{ github.event.number }}") | .id')
+            /users/${{ github.repository_owner }}/packages/container/${{ github.event.repository.name }}/versions/$(gh api /orgs/${{ github.repository_owner }}/packages/container/${{ github.event.repository.name }}/versions --jq '.[] | select(.metadata.container.tags[] == "pr-${{ github.event.number }}") | .id')
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
