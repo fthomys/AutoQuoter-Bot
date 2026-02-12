@@ -29,7 +29,7 @@ dependencies {
     implementation("ch.qos.logback:logback-classic:1.5.29")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
-    implementation("org.postgresql:postgresql:42.7.9")
+    implementation("org.postgresql:postgresql:42.7.10")
     implementation("net.dv8tion:JDA:6.3.0")
     implementation("io.github.freya022:BotCommands:3.0.0-beta.8")
     implementation("org.flywaydb:flyway-core:12.0.0")
