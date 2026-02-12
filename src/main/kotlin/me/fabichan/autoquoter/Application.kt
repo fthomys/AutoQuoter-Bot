@@ -6,6 +6,7 @@ import io.github.oshai.kotlinlogging.KotlinLogging
 import me.fabichan.autoquoter.config.Config
 import java.lang.management.ManagementFactory
 import kotlin.io.path.absolutePathString
+import kotlin.io.path.exists
 import kotlin.system.exitProcess
 import ch.qos.logback.classic.ClassicConstants as LogbackConstants
 
@@ -18,11 +19,13 @@ object Main {
     fun main(args: Array<out String>) {
 
         try {
-            System.setProperty(
-                LogbackConstants.CONFIG_FILE_PROPERTY,
-                Environment.logbackConfigPath.absolutePathString()
-            )
-            logger.info { "Loading logback configuration at ${Environment.logbackConfigPath.absolutePathString()}" }
+            if (Environment.logbackConfigPath.exists()) {
+                System.setProperty(
+                    LogbackConstants.CONFIG_FILE_PROPERTY,
+                    Environment.logbackConfigPath.absolutePathString()
+                )
+                logger.info { "Loading logback configuration at ${Environment.logbackConfigPath.absolutePathString()}" }
+            }
             logger.info { "Running on Java ${System.getProperty("java.version")}" }
 
             val config = Config.instance
