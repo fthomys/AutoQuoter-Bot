@@ -13,9 +13,19 @@ jobs:
     steps:
       - name: Delete PR Image Tag
         run: |
-          gh api \
-            --method DELETE \
-            -H "Accept: application/vnd.github+json" \
-            /orgs/${{ github.repository_owner }}/packages/container/${{ github.event.repository.name }}/versions/$(gh api /orgs/${{ github.repository_owner }}/packages/container/${{ github.event.repository.name }}/versions --jq '.[] | select(.metadata.container.tags[] == "pr-${{ github.event.number }}") | .id')
+          REPO_LOWER=$(echo "${{ github.event.repository.name }}" | tr '[:upper:]' '[:lower:]')
+          OWNER_LOWER=$(echo "${{ github.repository_owner }}" | tr '[:upper:]' '[:lower:]')
+          
+          OWNER_TYPE="users"
+          gh api /users/${OWNER_LOWER} > /dev/null 2>&1 || OWNER_TYPE="orgs"
+          
+          PACKAGE_ID=$(gh api /${OWNER_TYPE}/${OWNER_LOWER}/packages/container/${REPO_LOWER}/versions --jq ".[] | select(.metadata.container.tags[] == \"pr-${{ github.event.number }}\") | .id")
+          
+          if [ ! -z "$PACKAGE_ID" ]; then
+            gh api \
+              --method DELETE \
+              -H "Accept: application/vnd.github+json" \
+              /${OWNER_TYPE}/${OWNER_LOWER}/packages/container/${REPO_LOWER}/versions/$PACKAGE_ID
+          fi
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
