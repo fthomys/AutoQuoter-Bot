@@ -5,7 +5,7 @@ import kotlin.io.path.Path
 import kotlin.io.path.exists
 
 object Environment {
-    val folder: Path = System.getenv("BOT_DATA_DIR")?.let { Path(it) } ?: Path("")
+    val folder: Path = System.getenv("BOT_DATA_DIR")?.let { Path(it).toAbsolutePath() } ?: Path("").toAbsolutePath()
 
     val isDev: Boolean = folder.resolve("dev-config").exists()
 

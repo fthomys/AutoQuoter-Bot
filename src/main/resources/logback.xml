@@ -10,10 +10,10 @@
     </appender>
 
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>logs/latest.log</file>
+        <file>${BOT_DATA_DIR:-.}/logs/latest.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- daily rollover -->
-            <fileNamePattern>logs/logs-%d{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>${BOT_DATA_DIR:-.}/logs/logs-%d{yyyy-MM-dd}.log</fileNamePattern>
 
             <!-- keep 90 days worth of history capped at 3GB total size -->
             <maxHistory>90</maxHistory>

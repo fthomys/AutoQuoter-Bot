@@ -70,5 +70,6 @@ jib {
         mainClass = "me.fabichan.autoquoter.Main"
         jvmFlags = listOf("-XX:+UseContainerSupport")
         workingDirectory = "/app"
+        environment = mapOf("BOT_DATA_DIR" to "/app")
     }
 }
