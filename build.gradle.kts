@@ -40,6 +40,7 @@ dependencies {
     implementation("dev.reformator.stacktracedecoroutinator:stacktrace-decoroutinator-common:2.6.1")
     implementation("dev.reformator.stacktracedecoroutinator:stacktrace-decoroutinator-jvm:2.6.1")
     implementation("dev.reformator.stacktracedecoroutinator:stacktrace-decoroutinator-runtime:2.4.1")
+    implementation("io.micrometer:micrometer-registry-prometheus:1.16.3")
     runtimeOnly("org.postgresql:postgresql")
     runtimeOnly("org.flywaydb:flyway-database-postgresql:12.0.0")
 }

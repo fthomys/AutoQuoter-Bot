@@ -18,7 +18,7 @@ import kotlin.time.Duration.Companion.minutes
 private val logger = KotlinLogging.logger { }
 
 @BService
-class UpdateBotStatusTask(private val database: Database) {
+class UpdateBotStatusTask(private val database: Database, private val metrics: me.fabichan.autoquoter.Metrics) {
     private val updateBotStatusScope = namedDefaultScope("UpdateBotStatus", 1)
 
     @BEventListener
@@ -40,10 +40,16 @@ class UpdateBotStatusTask(private val database: Database) {
 
     private suspend fun updatePresence(shard: JDA) {
         val shardManager = shard.shardManager!!
-        val qouteCount = getQuoteCount().toString() + "x"
-        val status = if (shardManager.guildCache.size() > 0) OnlineStatus.ONLINE else OnlineStatus.IDLE
+        val quoteCountInt = getQuoteCount()
+        metrics.updateQuoteCount(quoteCountInt)
+        val guilds = shardManager.guildCache.size().toInt()
+        metrics.updateGuildCount(guilds)
+        metrics.updateShardPing(shard.shardInfo.shardId, shard.gatewayPing)
+
+        val quoteCount = "${quoteCountInt}x"
+        val status = if (guilds > 0) OnlineStatus.ONLINE else OnlineStatus.IDLE
         val activity =
-            createActivity("Quoted $qouteCount | on Shard ${shard.shardInfo.shardId} • ${shard.gatewayPing}ms ping")
+            createActivity("Quoted $quoteCount | on Shard ${shard.shardInfo.shardId} • ${shard.gatewayPing}ms ping")
 
         shard.presence.setPresence(status, activity, false)
     }

@@ -25,7 +25,7 @@ import net.dv8tion.jda.api.utils.messages.MessageCreateData
 private val logger = KotlinLogging.logger { }
 
 @BService
-class QuoteEvent(private val database: Database) {
+class QuoteEvent(private val database: Database, private val metrics: me.fabichan.autoquoter.Metrics) {
 
     @BEventListener
     suspend fun onMessage(event: MessageReceivedEvent) {
@@ -224,6 +224,7 @@ class QuoteEvent(private val database: Database) {
 
     private suspend fun recordQuoteStats(quotedMessage: Message, event: MessageReceivedEvent) {
         logger.info { "Quoted message from ${quotedMessage.author.name} (${quotedMessage.author.id}) from ${quotedMessage.guild.name}/${quotedMessage.channel.name} (${quotedMessage.guild.id}/${quotedMessage.channel.id}) in ${event.guild.name}/${event.channel.name} (${event.guild.id}/${event.channel.id})" }
+        metrics.incrementQuotesCreated()
         database.preparedStatement("INSERT INTO public.qoutestats (user_id, channel_id, guild_id, timestamp) VALUES (?, ?, ?, ?)") {
             executeUpdate(
                 quotedMessage.author.idLong,
