@@ -1,0 +1,24 @@
+{{- if .Values.metrics.vmServiceScrape.enabled }}
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMServiceScrape
+metadata:
+  name: {{ include "autoquoter-bot.fullname" . }}
+  labels:
+    {{- include "autoquoter-bot.labels" . | nindent 4 }}
+    {{- with .Values.metrics.vmServiceScrape.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "autoquoter-bot.selectorLabels" . | nindent 6 }}
+  endpoints:
+    - path: /metrics
+      port: http-metrics
+      {{- with .Values.metrics.vmServiceScrape.interval }}
+      interval: {{ . }}
+      {{- end }}
+  namespaceSelector:
+    matchNames:
+      - {{ .Release.Namespace }}
+{{- end }}

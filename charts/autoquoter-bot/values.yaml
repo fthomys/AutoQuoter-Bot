@@ -23,6 +23,14 @@ serviceAccount:
   # If not set and create is true, a name is generated using the fullname template
   name: ""
 
+service:
+  type: ClusterIP
+  port: 8080
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "8080"
+    prometheus.io/path: "/metrics"
+
 podAnnotations:
   prometheus.io/scrape: "true"
   prometheus.io/port: "8080"
@@ -80,3 +88,11 @@ affinity: {}
 
 metrics:
   port: 8080
+  serviceMonitor:
+    enabled: false
+    # interval: 30s
+    # labels: {}
+  vmServiceScrape:
+    enabled: false
+    # interval: 30s
+    # labels: {}

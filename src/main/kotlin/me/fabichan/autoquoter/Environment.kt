@@ -5,9 +5,9 @@ import kotlin.io.path.Path
 import kotlin.io.path.exists
 
 object Environment {
-    val isDev: Boolean = Path("dev-config").exists()
+    val folder: Path = System.getenv("BOT_DATA_DIR")?.let { Path(it) } ?: Path("")
 
-    val folder: Path = Path("")
+    val isDev: Boolean = folder.resolve("dev-config").exists()
 
     val configFolder: Path = folder.resolve("config")
     val logbackConfigPath: Path = configFolder.resolve("logback.xml")

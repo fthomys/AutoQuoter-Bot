@@ -69,5 +69,6 @@ jib {
     container {
         mainClass = "me.fabichan.autoquoter.Main"
         jvmFlags = listOf("-XX:+UseContainerSupport")
+        workingDirectory = "/app"
     }
 }
