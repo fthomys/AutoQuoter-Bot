@@ -15,7 +15,9 @@ import com.sun.net.httpserver.HttpServer
 import io.micrometer.prometheusmetrics.PrometheusConfig
 import io.micrometer.prometheusmetrics.PrometheusMeterRegistry
 import java.net.InetSocketAddress
+import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.Executors
+import java.util.concurrent.atomic.AtomicInteger
 
 private val logger = KotlinLogging.logger {}
 
@@ -23,9 +25,9 @@ private val logger = KotlinLogging.logger {}
 class Metrics {
     val prometheusRegistry = PrometheusMeterRegistry(PrometheusConfig.DEFAULT)
     
-    private var quoteCount = 0.0
-    private var guildCount = 0.0
-    private val shardPings = mutableMapOf<Int, Double>()
+    private var quoteCount = AtomicInteger(0)
+    private var guildCount = AtomicInteger(0)
+    private val shardPings = ConcurrentHashMap<Int, Double>()
     private val quotesCreatedCounter = Counter.builder("autoquoter_quotes_created_total")
         .description("Total number of quotes created in this session")
         .register(prometheusRegistry)
@@ -40,11 +42,11 @@ class Metrics {
         FileDescriptorMetrics().bindTo(prometheusRegistry)
         UptimeMetrics().bindTo(prometheusRegistry)
 
-        Gauge.builder("autoquoter_quotes_total", this) { quoteCount }
+        Gauge.builder("autoquoter_quotes_total", quoteCount) { it.get().toDouble() }
             .description("Total number of quotes recorded")
             .register(prometheusRegistry)
 
-        Gauge.builder("autoquoter_guilds_total", this) { guildCount }
+        Gauge.builder("autoquoter_guilds_total", guildCount) { it.get().toDouble() }
             .description("Total number of guilds the bot is in")
             .register(prometheusRegistry)
             
@@ -52,11 +54,11 @@ class Metrics {
     }
 
     fun updateQuoteCount(count: Int) {
-        quoteCount = count.toDouble()
+        quoteCount.set(count)
     }
 
     fun updateGuildCount(count: Int) {
-        guildCount = count.toDouble()
+        guildCount.set(count)
     }
     
     fun incrementQuotesCreated() {
@@ -65,12 +67,10 @@ class Metrics {
 
     fun updateShardPing(shardId: Int, ping: Long) {
         shardPings[shardId] = ping.toDouble()
-        Gauge.builder("autoquoter_gateway_ping", shardPings) { 
-            shardPings[shardId] ?: 0.0 
+        // Register the gauge only once per shardId
+        prometheusRegistry.gauge("autoquoter_gateway_ping", listOf(io.micrometer.core.instrument.Tag.of("shard_id", shardId.toString())), shardPings) {
+            it[shardId] ?: 0.0
         }
-            .description("Gateway ping for the shard")
-            .tag("shard_id", shardId.toString())
-            .register(prometheusRegistry)
     }
 
     private fun startServer() {
