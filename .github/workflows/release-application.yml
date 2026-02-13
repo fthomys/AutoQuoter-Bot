@@ -46,16 +46,16 @@ jobs:
           images: |
             ghcr.io/${{ github.repository }}
           flavor: |
-            latest=false
+            latest=auto
           tags: |
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
             type=semver,pattern={{major}}
             
-            type=raw,value=latest,enable=${{ github.event_name == 'release' && github.event.release.prerelease == false }}
-            type=raw,value=release,enable=${{ github.event_name == 'release' && github.event.release.prerelease == false }}
+            type=raw,value=latest,enable=${{ github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v') }}
+            type=raw,value=release,enable=${{ github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v') }}
             
-            type=raw,value=pre-release,enable=${{ github.event_name == 'release' && github.event.release.prerelease == true }}
+            type=raw,value=pre-release,enable=${{ github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v') && contains(github.ref, '-') }}
             
             type=raw,value=nightly,enable=${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
             type=raw,value=nightly-${{ github.sha }},enable=${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
@@ -85,7 +85,7 @@ jobs:
         if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ steps.taggen.outputs.new_tag }}
-          name: ${{ steps.taggen.outputs.new_tag }}
+          tag_name: ${{ github.ref_name }}
+          name: ${{ github.ref_name }}
           draft: false
           generate_release_notes: true
