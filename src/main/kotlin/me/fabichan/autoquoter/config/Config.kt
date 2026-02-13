@@ -29,6 +29,7 @@ data class Config(
     val botApiKey: String? = null,
     val supportGuildInvite: String,
     val joinLeaveLogWebhook: String,
+    val proxyUrl: String? = null,
 ) {
     companion object {
         private val logger = KotlinLogging.logger { }

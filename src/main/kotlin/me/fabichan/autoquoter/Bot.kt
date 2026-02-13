@@ -5,6 +5,7 @@ import io.github.freya022.botcommands.api.core.events.BReadyEvent
 import io.github.freya022.botcommands.api.core.service.annotations.BService
 import io.github.oshai.kotlinlogging.KotlinLogging
 import me.fabichan.autoquoter.config.Config
+import net.dv8tion.jda.api.JDAInfo
 import net.dv8tion.jda.api.OnlineStatus
 import net.dv8tion.jda.api.entities.Activity
 import net.dv8tion.jda.api.hooks.IEventManager
@@ -26,12 +27,18 @@ class Bot(private val config: Config) : JDAService() {
     override val cacheFlags: Set<CacheFlag> = setOf(
     )
 
+    val restConfig =
+        getDefaultRestConfig().apply {
+            baseUrl = config.proxyUrl?.let { it + "/api/v" + JDAInfo.DISCORD_REST_VERSION + "/" } ?: baseUrl
+        }
+
     override fun createJDA(event: BReadyEvent, eventManager: IEventManager) {
         val shardManager = DefaultShardManagerBuilder.createLight(config.token, intents).apply {
             enableCache(cacheFlags)
             setMemberCachePolicy(MemberCachePolicy.NONE)
             setChunkingFilter(ChunkingFilter.NONE)
             setStatus(OnlineStatus.DO_NOT_DISTURB)
+            setRestConfig(restConfig)
             setActivityProvider { Activity.playing("Booting up...") }
             setEventManagerProvider { eventManager }
         }.build()
