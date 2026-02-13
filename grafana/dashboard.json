@@ -93,7 +93,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "autoquoter_quotes_total",
+          "expr": "autoquoter_quotes_all_total",
           "instant": false,
           "range": true,
           "refId": "A"

@@ -42,7 +42,7 @@ class Metrics {
         FileDescriptorMetrics().bindTo(prometheusRegistry)
         UptimeMetrics().bindTo(prometheusRegistry)
 
-        Gauge.builder("autoquoter_quotes_total", quoteCount) { it.get().toDouble() }
+        Gauge.builder("autoquoter_quotes_all_total", quoteCount) { it.get().toDouble() }
             .description("Total number of quotes recorded")
             .register(prometheusRegistry)
 
