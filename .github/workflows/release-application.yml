@@ -80,10 +80,11 @@ jobs:
             -Djib.to.tags="$TAGS_ONLY" \
             -Djib.container.labels="$(echo "${{ steps.meta.outputs.labels }}" | tr '\n' ',' | sed 's/,$//')"
           
-      - name: Create GitHub Release
+      - name: Create GitHub Release with Artifacts
         if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ github.ref_name }}
-          name: Release ${{ github.ref_name }}
+          tag_name: ${{ steps.taggen.outputs.new_tag }}
+          name: ${{ steps.taggen.outputs.new_tag }}
+          draft: false
           generate_release_notes: true
