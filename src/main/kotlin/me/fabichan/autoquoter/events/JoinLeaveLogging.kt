@@ -1,7 +1,7 @@
 package me.fabichan.autoquoter.events
 
-import dev.minn.jda.ktx.coroutines.await
-import dev.minn.jda.ktx.messages.Embed
+import dev.freya02.botcommands.jda.ktx.coroutines.await
+import dev.freya02.botcommands.jda.ktx.messages.Embed
 import io.github.freya022.botcommands.api.core.annotations.BEventListener
 import io.github.freya022.botcommands.api.core.service.annotations.BService
 import io.github.oshai.kotlinlogging.KotlinLogging

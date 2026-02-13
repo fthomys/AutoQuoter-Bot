@@ -1,9 +1,9 @@
 package me.fabichan.autoquoter.events
 
+import dev.freya02.botcommands.jda.ktx.getChannel
 import dev.freya02.botcommands.jda.ktx.requests.awaitOrNullOn
-import dev.minn.jda.ktx.generics.getChannel
-import dev.minn.jda.ktx.messages.EmbedBuilder
-import dev.minn.jda.ktx.messages.MessageCreate
+import dev.freya02.botcommands.jda.ktx.messages.EmbedBuilder
+import dev.freya02.botcommands.jda.ktx.messages.MessageCreate
 import io.github.freya022.botcommands.api.core.annotations.BEventListener
 import io.github.freya022.botcommands.api.core.db.Database
 import io.github.freya022.botcommands.api.core.db.preparedStatement
