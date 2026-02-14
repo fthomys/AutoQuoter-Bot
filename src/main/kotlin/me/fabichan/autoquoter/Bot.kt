@@ -29,6 +29,7 @@ class Bot(private val config: Config) : JDAService() {
 
     val restConfig =
         getDefaultRestConfig().apply {
+            if (config.proxyUrl != null) logger.info { "Using proxy URL: ${config.proxyUrl}" }
             baseUrl = config.proxyUrl?.let { it + "/api/v" + JDAInfo.DISCORD_REST_VERSION + "/" } ?: baseUrl
         }
 
