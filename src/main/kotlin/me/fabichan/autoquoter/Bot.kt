@@ -34,7 +34,19 @@ class Bot(private val config: Config) : JDAService() {
         }
 
     override fun createJDA(event: BReadyEvent, eventManager: IEventManager) {
+        val shardIds = ShardHelper.getShardIdsForCurrentPod()
+        val totalShards = ShardHelper.getTotalShards()
+
         val shardManager = DefaultShardManagerBuilder.createLight(config.token, intents).apply {
+            if (shardIds.isNotEmpty()) {
+                logger.info { "Setting shards to $shardIds out of $totalShards" }
+                setShards(shardIds)
+                setShardsTotal(totalShards)
+            } else if (totalShards != -1) {
+                logger.info { "Setting total shards to $totalShards" }
+                setShardsTotal(totalShards)
+            }
+
             enableCache(cacheFlags)
             setMemberCachePolicy(MemberCachePolicy.NONE)
             setChunkingFilter(ChunkingFilter.NONE)

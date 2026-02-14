@@ -30,6 +30,7 @@ data class Config(
     val supportGuildInvite: String,
     val joinLeaveLogWebhook: String,
     val proxyUrl: String? = null,
+    val shardCountOverride: Int? = null,
 ) {
     companion object {
         private val logger = KotlinLogging.logger { }
