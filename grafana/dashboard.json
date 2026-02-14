@@ -93,7 +93,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "autoquoter_quotes_all_total",
+          "expr": "max(autoquoter_quotes_all_total{pod=~\"$pod\"})",
           "instant": false,
           "range": true,
           "refId": "A"
@@ -154,7 +154,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "autoquoter_guilds_total",
+          "expr": "sum(autoquoter_guilds_total{pod=~\"$pod\"})",
           "instant": false,
           "range": true,
           "refId": "A"
@@ -215,7 +215,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "sum(increase(autoquoter_quotes_created_total[24h]))",
+          "expr": "sum(increase(autoquoter_quotes_created_total{pod=~\"$pod\"}[24h]))",
           "instant": false,
           "range": true,
           "refId": "A"
@@ -308,9 +308,9 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "autoquoter_gateway_ping",
+          "expr": "autoquoter_gateway_ping{pod=~\"$pod\"}",
           "instant": false,
-          "legendFormat": "Shard {{shard_id}}",
+          "legendFormat": "Shard {{shard_id}} ({{pod}})",
           "range": true,
           "refId": "A"
         }
@@ -411,9 +411,9 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "process_cpu_usage",
+          "expr": "process_cpu_usage{pod=~\"$pod\"}",
           "instant": false,
-          "legendFormat": "Process CPU",
+          "legendFormat": "Process CPU ({{pod}})",
           "range": true,
           "refId": "A"
         },
@@ -423,9 +423,9 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "system_cpu_usage",
+          "expr": "system_cpu_usage{pod=~\"$pod\"}",
           "instant": false,
-          "legendFormat": "System CPU",
+          "legendFormat": "System CPU ({{pod}})",
           "range": true,
           "refId": "B"
         }
@@ -515,9 +515,9 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "jvm_memory_used_bytes{area=\"heap\"}",
+          "expr": "jvm_memory_used_bytes{area=\"heap\", pod=~\"$pod\"}",
           "instant": false,
-          "legendFormat": "Heap Used",
+          "legendFormat": "Heap Used ({{pod}})",
           "range": true,
           "refId": "A"
         },
@@ -527,9 +527,9 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "jvm_memory_committed_bytes{area=\"heap\"}",
+          "expr": "jvm_memory_committed_bytes{area=\"heap\", pod=~\"$pod\"}",
           "instant": false,
-          "legendFormat": "Heap Committed",
+          "legendFormat": "Heap Committed ({{pod}})",
           "range": true,
           "refId": "B"
         },
@@ -539,9 +539,9 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "jvm_memory_max_bytes{area=\"heap\"}",
+          "expr": "jvm_memory_max_bytes{area=\"heap\", pod=~\"$pod\"}",
           "instant": false,
-          "legendFormat": "Heap Max",
+          "legendFormat": "Heap Max ({{pod}})",
           "range": true,
           "refId": "C"
         }
@@ -628,9 +628,9 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "jvm_threads_states_threads",
+          "expr": "jvm_threads_states_threads{pod=~\"$pod\"}",
           "instant": false,
-          "legendFormat": "{{state}}",
+          "legendFormat": "{{state}} ({{pod}})",
           "range": true,
           "refId": "A"
         }
@@ -718,9 +718,9 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "rate(jvm_gc_pause_seconds_sum[5m])",
+          "expr": "rate(jvm_gc_pause_seconds_sum{pod=~\"$pod\"}[5m])",
           "instant": false,
-          "legendFormat": "GC Pause Rate",
+          "legendFormat": "GC Pause Rate ({{pod}})",
           "range": true,
           "refId": "A"
         }
@@ -753,6 +753,30 @@
         "regex": "",
         "skipUrlSync": false,
         "type": "datasource"
+      },
+      {
+        "allValue": ".*",
+        "current": {},
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${datasource}"
+        },
+        "definition": "label_values(autoquoter_guilds_total, pod)",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Pod",
+        "multi": true,
+        "name": "pod",
+        "options": [],
+        "query": {
+          "query": "label_values(autoquoter_guilds_total, pod)",
+          "refId": "StandardVariableQuery"
+        },
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "type": "query"
       }
     ]
   },

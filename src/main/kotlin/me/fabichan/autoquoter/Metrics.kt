@@ -23,7 +23,10 @@ private val logger = KotlinLogging.logger {}
 
 @BService
 class Metrics {
-    val prometheusRegistry = PrometheusMeterRegistry(PrometheusConfig.DEFAULT)
+    val prometheusRegistry = PrometheusMeterRegistry(PrometheusConfig.DEFAULT).apply {
+        val podName = System.getenv("POD_NAME") ?: "unknown-pod"
+        config().commonTags("pod", podName)
+    }
     
     private var quoteCount = AtomicInteger(0)
     private var guildCount = AtomicInteger(0)
@@ -68,9 +71,13 @@ class Metrics {
     fun updateShardPing(shardId: Int, ping: Long) {
         shardPings[shardId] = ping.toDouble()
         // Register the gauge only once per shardId
-        prometheusRegistry.gauge("autoquoter_gateway_ping", listOf(io.micrometer.core.instrument.Tag.of("shard_id", shardId.toString())), shardPings) {
-            it[shardId] ?: 0.0
+        // Micrometer handles multiple registrations with the same tags by returning the existing gauge
+        Gauge.builder("autoquoter_gateway_ping", shardPings) { 
+            it[shardId] ?: 0.0 
         }
+            .tag("shard_id", shardId.toString())
+            .description("Gateway ping for a specific shard")
+            .register(prometheusRegistry)
     }
 
     private fun startServer() {
