@@ -4,13 +4,13 @@ import me.fabichan.autoquoter.config.Config
 
 object ShardHelper {
     private val podName = System.getenv("POD_NAME")
-    private val totalShards = Config.instance.shardCountOverride ?: System.getenv("TOTAL_SHARDS")?.toInt() ?: if (podName == null) -1 else 1
+    private val totalShards = Config.instance.shardCountOverride ?: System.getenv("TOTAL_SHARDS")?.toInt() ?: 1
     private val totalReplicas = System.getenv("REPLICAS")?.toInt() ?: 1
 
     fun getShardIdsForCurrentPod(): List<Int> {
         val override = Config.instance.shardCountOverride
         if (override != null) return (0 until override).toList()
-        if (podName == null) return emptyList()
+        if (podName == null) return (0 until totalShards).toList()
 
         val podIndex = podName.substringAfterLast("-").toIntOrNull() ?: 0
 
@@ -22,6 +22,8 @@ object ShardHelper {
 
         return (start until (start + count)).toList()
     }
+    
+    fun toIntRange(shards: List<Int>): IntRange? = if (shards.isEmpty()) null else shards.first()..shards.last()
 
     fun getTotalShards() = totalShards
 }

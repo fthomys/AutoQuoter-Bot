@@ -45,21 +45,15 @@ class Bot(private val config: Config) : JDAService() {
         }
 
     override fun createJDA(event: BReadyEvent, eventManager: IEventManager) {
+        val shards = ShardHelper.getShardIdsForCurrentPod()
         lightSharded(
             config.token,
             restConfig = restConfig,
             memberCachePolicy = MemberCachePolicy.NONE,
             chunkingFilter = ChunkingFilter.NONE,
+            shardsTotal = ShardHelper.getTotalShards(),
+            shardRange = ShardHelper.toIntRange(shards),
         ) {
-            val totalShards = ShardHelper.getTotalShards()
-            if (totalShards != -1) {
-                setShardsTotal(totalShards)
-            }
-
-            val shards = ShardHelper.getShardIdsForCurrentPod()
-            if (shards.isNotEmpty()) {
-                setShards(shards)
-            }
             logger.info { "Created shards: ${shards.size}" }
 
             setStatus(OnlineStatus.DO_NOT_DISTURB)
