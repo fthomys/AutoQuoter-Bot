@@ -2,6 +2,7 @@ package me.fabichan.autoquoter
 
 import io.github.freya022.botcommands.api.core.JDAService
 import io.github.freya022.botcommands.api.core.events.BReadyEvent
+import io.github.freya022.botcommands.api.core.lightSharded
 import io.github.freya022.botcommands.api.core.service.annotations.BService
 import io.github.oshai.kotlinlogging.KotlinLogging
 import me.fabichan.autoquoter.config.Config
@@ -10,12 +11,22 @@ import net.dv8tion.jda.api.OnlineStatus
 import net.dv8tion.jda.api.entities.Activity
 import net.dv8tion.jda.api.hooks.IEventManager
 import net.dv8tion.jda.api.requests.GatewayIntent
-import net.dv8tion.jda.api.sharding.DefaultShardManagerBuilder
 import net.dv8tion.jda.api.utils.ChunkingFilter
 import net.dv8tion.jda.api.utils.MemberCachePolicy
 import net.dv8tion.jda.api.utils.cache.CacheFlag
+import okhttp3.ConnectionPool
+import okhttp3.OkHttpClient
+import java.net.Proxy
+import java.util.concurrent.TimeUnit
 
 private val logger by lazy { KotlinLogging.logger {} }
+
+private const val CONNECT_TIMEOUT = 10L
+private const val READ_TIMEOUT = 10L
+private const val WRITE_TIMEOUT = 10L
+private const val RETRY_ON_CONNECTION_FAILURE = true
+private const val MAX_IDLE_CONNECTIONS = 5
+private const val KEEP_ALIVE_DURATION = 5L
 
 
 @BService
@@ -34,28 +45,50 @@ class Bot(private val config: Config) : JDAService() {
         }
 
     override fun createJDA(event: BReadyEvent, eventManager: IEventManager) {
-        val shardIds = ShardHelper.getShardIdsForCurrentPod()
-        val totalShards = ShardHelper.getTotalShards()
-
-        val shardManager = DefaultShardManagerBuilder.createLight(config.token, intents).apply {
-            if (shardIds.isNotEmpty()) {
-                logger.info { "Setting shards to $shardIds out of $totalShards" }
-                setShards(shardIds)
-                setShardsTotal(totalShards)
-            } else if (totalShards != -1) {
-                logger.info { "Setting total shards to $totalShards" }
+        lightSharded(
+            config.token,
+            restConfig = restConfig,
+            memberCachePolicy = MemberCachePolicy.NONE,
+            chunkingFilter = ChunkingFilter.NONE,
+        ) {
+            val totalShards = ShardHelper.getTotalShards()
+            if (totalShards != -1) {
                 setShardsTotal(totalShards)
             }
 
-            enableCache(cacheFlags)
-            setMemberCachePolicy(MemberCachePolicy.NONE)
-            setChunkingFilter(ChunkingFilter.NONE)
+            val shards = ShardHelper.getShardIdsForCurrentPod()
+            if (shards.isNotEmpty()) {
+                setShards(shards)
+            }
+            logger.info { "Created shards: ${shards.size}" }
+
             setStatus(OnlineStatus.DO_NOT_DISTURB)
-            setRestConfig(restConfig)
             setActivityProvider { Activity.playing("Booting up...") }
-            setEventManagerProvider { eventManager }
-        }.build()
-        logger.info { "Booting up ${shardManager.shards.size} shards" }
+
+            if (config.proxyUrl != null) {
+                setHttpClient(
+                    OkHttpClient
+                        .Builder()
+                        .connectTimeout(CONNECT_TIMEOUT, TimeUnit.SECONDS)
+                        .readTimeout(READ_TIMEOUT, TimeUnit.SECONDS)
+                        .writeTimeout(WRITE_TIMEOUT, TimeUnit.SECONDS)
+                        .retryOnConnectionFailure(RETRY_ON_CONNECTION_FAILURE)
+                        .apply {
+                            val proxyUri =
+                                config.proxyUrl
+                                    .let { java.net.URI.create(it) }
+                            val proxy =
+                                Proxy(
+                                    Proxy.Type.HTTP,
+                                    java.net.InetSocketAddress(proxyUri.host, proxyUri.port),
+                                )
+                            logger.info { "Using proxy for HTTP gateway connection: ${proxyUri.host}:${proxyUri.port}" }
+                            proxy(proxy)
+                        }.connectionPool(ConnectionPool(MAX_IDLE_CONNECTIONS, KEEP_ALIVE_DURATION, TimeUnit.SECONDS))
+                        .build(),
+                )
+            }
+        }
     }
 
 }
