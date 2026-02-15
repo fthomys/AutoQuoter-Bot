@@ -35,7 +35,7 @@ dependencies {
     implementation("org.flywaydb:flyway-core:12.0.1")
     runtimeOnly("org.flywaydb:flyway-database-postgresql:12.0.1")
 
-    implementation("net.dv8tion:JDA:6.3.0")
+    implementation("net.dv8tion:JDA:6.3.1")
     implementation("io.github.freya022:BotCommands:3.0.0-beta.8")
     
     implementation("com.google.code.gson:gson:2.13.2")
