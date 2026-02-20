@@ -32,8 +32,8 @@ dependencies {
 
     runtimeOnly("org.postgresql:postgresql:42.7.10")
     implementation("com.zaxxer:HikariCP:7.0.2")
-    implementation("org.flywaydb:flyway-core:12.0.1")
-    runtimeOnly("org.flywaydb:flyway-database-postgresql:12.0.1")
+    implementation("org.flywaydb:flyway-core:12.0.2")
+    runtimeOnly("org.flywaydb:flyway-database-postgresql:12.0.2")
 
     implementation("net.dv8tion:JDA:6.3.1")
     implementation("io.github.freya022:BotCommands:3.0.0-beta.8")
