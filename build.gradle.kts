@@ -5,7 +5,7 @@ plugins {
     java
     kotlin("plugin.serialization") version "2.3.10"
     application
-    id("com.palantir.git-version") version "4.3.0"
+    id("com.palantir.git-version") version "5.0.0"
     id("com.google.cloud.tools.jib") version "3.5.3"
 }
 
