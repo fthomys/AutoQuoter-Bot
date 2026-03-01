@@ -23,7 +23,7 @@ dependencies {
 
     implementation("dev.reformator.stacktracedecoroutinator:stacktrace-decoroutinator-jvm:2.6.1")
 
-    implementation("io.github.oshai:kotlin-logging-jvm:7.0.14")
+    implementation("io.github.oshai:kotlin-logging-jvm:8.0.01")
     implementation("org.slf4j:slf4j-api:2.1.0-alpha1")
     implementation("ch.qos.logback:logback-classic:1.5.32")
 
