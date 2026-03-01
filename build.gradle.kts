@@ -36,10 +36,10 @@ dependencies {
     runtimeOnly("org.flywaydb:flyway-database-postgresql:12.0.3")
 
     implementation("net.dv8tion:JDA:6.3.1")
-    implementation("io.github.freya022:BotCommands:3.0.0-beta.8")
+    implementation("io.github.freya022:BotCommands:3.0.0-beta.9")
     
     implementation("com.google.code.gson:gson:2.13.2")
-    implementation("io.github.freya022:BotCommands-jda-ktx:3.0.0-beta.8")
+    implementation("io.github.freya022:BotCommands-jda-ktx:3.0.0-beta.9")
 
     implementation("io.micrometer:micrometer-registry-prometheus:1.16.3")
 
