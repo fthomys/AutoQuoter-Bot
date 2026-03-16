@@ -1,9 +1,9 @@
 import groovy.lang.Closure
 
 plugins {
-    kotlin("jvm") version "2.3.10"
+    kotlin("jvm") version "2.3.20"
     java
-    kotlin("plugin.serialization") version "2.3.10"
+    kotlin("plugin.serialization") version "2.3.20"
     application
     id("com.palantir.git-version") version "5.0.0"
     id("com.google.cloud.tools.jib") version "3.5.3"
