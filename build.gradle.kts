@@ -32,14 +32,14 @@ dependencies {
 
     runtimeOnly("org.postgresql:postgresql:42.7.10")
     implementation("com.zaxxer:HikariCP:7.0.2")
-    implementation("org.flywaydb:flyway-core:12.1.0")
-    runtimeOnly("org.flywaydb:flyway-database-postgresql:12.1.0")
+    implementation("org.flywaydb:flyway-core:12.1.1")
+    runtimeOnly("org.flywaydb:flyway-database-postgresql:12.1.1")
 
     implementation("net.dv8tion:JDA:6.3.2")
-    implementation("io.github.freya022:BotCommands:3.0.0-beta.10")
+    implementation("io.github.freya022:BotCommands:3.0.0")
     
     implementation("com.google.code.gson:gson:2.13.2")
-    implementation("io.github.freya022:BotCommands-jda-ktx:3.0.0-beta.10")
+    implementation("io.github.freya022:BotCommands-jda-ktx:3.0.0")
 
     implementation("io.micrometer:micrometer-registry-prometheus:1.16.4")
 
