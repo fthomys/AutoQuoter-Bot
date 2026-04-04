@@ -21,7 +21,7 @@ repositories {
 dependencies {
     implementation(kotlin("stdlib"))
 
-    implementation("dev.reformator.stacktracedecoroutinator:stacktrace-decoroutinator-jvm:2.6.1")
+    implementation("dev.reformator.stacktracedecoroutinator:stacktrace-decoroutinator-jvm:2.6.2")
 
     implementation("io.github.oshai:kotlin-logging-jvm:8.0.01")
     implementation("org.slf4j:slf4j-api:2.1.0-alpha1")
@@ -32,14 +32,14 @@ dependencies {
 
     runtimeOnly("org.postgresql:postgresql:42.7.10")
     implementation("com.zaxxer:HikariCP:7.0.2")
-    implementation("org.flywaydb:flyway-core:12.1.1")
-    runtimeOnly("org.flywaydb:flyway-database-postgresql:12.1.1")
+    implementation("org.flywaydb:flyway-core:12.3.0")
+    runtimeOnly("org.flywaydb:flyway-database-postgresql:12.3.0")
 
-    implementation("net.dv8tion:JDA:6.3.2")
-    implementation("io.github.freya022:BotCommands:3.0.0")
+    implementation("net.dv8tion:JDA:6.4.1")
+    implementation("io.github.freya022:BotCommands:3.1.0")
     
     implementation("com.google.code.gson:gson:2.13.2")
-    implementation("io.github.freya022:BotCommands-jda-ktx:3.0.0")
+    implementation("io.github.freya022:BotCommands-jda-ktx:3.1.0")
 
     implementation("io.micrometer:micrometer-registry-prometheus:1.16.4")
 
