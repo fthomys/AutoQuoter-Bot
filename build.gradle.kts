@@ -41,7 +41,7 @@ dependencies {
     implementation("com.google.code.gson:gson:2.13.2")
     implementation("io.github.freya022:BotCommands-jda-ktx:3.1.0")
 
-    implementation("io.micrometer:micrometer-registry-prometheus:1.16.4")
+    implementation("io.micrometer:micrometer-registry-prometheus:1.16.5")
 
 }
 
