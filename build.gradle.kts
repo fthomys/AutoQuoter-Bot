@@ -1,12 +1,12 @@
 import groovy.lang.Closure
 
 plugins {
-    kotlin("jvm") version "2.3.20"
+    kotlin("jvm") version "2.4.10"
     java
-    kotlin("plugin.serialization") version "2.3.20"
+    kotlin("plugin.serialization") version "2.4.10"
     application
     id("com.palantir.git-version") version "5.0.0"
-    id("com.google.cloud.tools.jib") version "3.5.3"
+    id("com.google.cloud.tools.jib") version "3.5.4"
 }
 
 application.mainClass.set("me.fabichan.autoquoter.Main")
@@ -21,27 +21,27 @@ repositories {
 dependencies {
     implementation(kotlin("stdlib"))
 
-    implementation("dev.reformator.stacktracedecoroutinator:stacktrace-decoroutinator-jvm:2.6.2")
+    implementation("dev.reformator.stacktracedecoroutinator:stacktrace-decoroutinator-jvm:2.6.4")
 
-    implementation("io.github.oshai:kotlin-logging-jvm:8.0.01")
+    implementation("io.github.oshai:kotlin-logging-jvm:8.0.4")
     implementation("org.slf4j:slf4j-api:2.1.0-alpha1")
-    implementation("ch.qos.logback:logback-classic:1.5.32")
+    implementation("ch.qos.logback:logback-classic:1.6.1")
 
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
 
-    runtimeOnly("org.postgresql:postgresql:42.7.12")
-    implementation("com.zaxxer:HikariCP:7.0.2")
-    implementation("org.flywaydb:flyway-core:12.3.0")
-    runtimeOnly("org.flywaydb:flyway-database-postgresql:12.3.0")
+    runtimeOnly("org.postgresql:postgresql:42.7.13")
+    implementation("com.zaxxer:HikariCP:7.1.0")
+    implementation("org.flywaydb:flyway-core:12.11.0")
+    runtimeOnly("org.flywaydb:flyway-database-postgresql:12.11.0")
 
-    implementation("net.dv8tion:JDA:6.4.1")
-    implementation("io.github.freya022:BotCommands:3.1.0")
+    implementation("net.dv8tion:JDA:6.5.0")
+    implementation("io.github.freya022:BotCommands:3.3.0")
     
-    implementation("com.google.code.gson:gson:2.13.2")
-    implementation("io.github.freya022:BotCommands-jda-ktx:3.1.0")
+    implementation("com.google.code.gson:gson:2.14.0")
+    implementation("io.github.freya022:BotCommands-jda-ktx:3.3.0")
 
-    implementation("io.micrometer:micrometer-registry-prometheus:1.16.5")
+    implementation("io.micrometer:micrometer-registry-prometheus:1.17.0")
 
 }
 
